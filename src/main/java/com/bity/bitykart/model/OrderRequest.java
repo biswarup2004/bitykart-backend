@@ -1,12 +1,13 @@
+// Update OrderRequest.java
 package com.bity.bitykart.model;
 
 import java.util.Map;
 
 public class OrderRequest {
 
-    private Map<Long,Integer> productQuantities;
-
+    private Map<Long, Integer> productQuantities;
     private double totalAmount;
+    private String paymentMethod; // Add this field
 
     public Map<Long, Integer> getProductQuantities() {
         return productQuantities;
@@ -22,5 +23,13 @@ public class OrderRequest {
 
     public void setTotalAmount(double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 }

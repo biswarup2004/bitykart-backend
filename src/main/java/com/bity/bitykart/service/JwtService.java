@@ -1,5 +1,4 @@
-// [file name]: JwtService.java
-// [file content begin]
+
 package com.bity.bitykart.service;
 
 import io.jsonwebtoken.Claims;

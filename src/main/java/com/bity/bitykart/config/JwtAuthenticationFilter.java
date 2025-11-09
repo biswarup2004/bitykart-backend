@@ -32,8 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         try {
             final String authHeader = request.getHeader("Authorization");
+            System.out.println("JWT Filter - Request URI: " + request.getRequestURI());
+            System.out.println("JWT Filter - Authorization Header: " + authHeader);
 
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                System.out.println("JWT Filter - No Bearer token found");
                 filterChain.doFilter(request, response);
                 return;
             }
@@ -41,17 +44,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             String userEmail = jwtService.getEmailFromToken(token);
 
+            System.out.println("JWT Filter - User Email from token: " + userEmail);
+
             if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtService.validateToken(token)) {
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userEmail, null, null);
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                    System.out.println("JWT Filter - Authentication set for user: " + userEmail);
+                } else {
+                    System.out.println("JWT Filter - Token validation failed");
                 }
             }
         } catch (Exception e) {
             // Log the error but don't break the filter chain
             logger.error("JWT authentication error: " + e.getMessage());
+            System.out.println("JWT Filter - Error: " + e.getMessage());
         }
 
         filterChain.doFilter(request, response);
